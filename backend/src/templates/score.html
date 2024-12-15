@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+        <meta charset="UTF-8">
+        <title>Environmental Impact Score</title>
+    </head>
+    <body>
+        <center><img src="https://img.icons8.com/?size=100&id=XRCTHr90bal5&format=png&color=000000"></center>
+        <h3>Item: {{productName}}</h2>
+        <h2>Environmentally Friendly Score:</h1>
+        
+        <h2>{{score}}</h2>
+        <form action="/camera" method="POST">
+            <center><input type="submit" class="file_submit" value="Scan Again"></center>
+        </form>
+    </body>
+    
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <title>Barcode Reader</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}" />
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 0;
+                background: #f4f4f4;
+            }
+            #header {
+                text-align: center;
+                padding: 20px;
+                background-color: #40C057;
+                color: white;
+            }
+            #header img {
+                width: 100px;
+                margin-bottom: 20px;
+            }
+            #header h1 {
+                font-size: 2em;
+                margin: 10px 0;
+            }
+            #header p {
+                font-size: 1.2em;
+            }
+            #main {
+                padding: 40px 10%;
+                text-align: center;
+            }
+            #videoContainer {
+                margin: 30px auto;
+                max-width: 600px;
+                text-align: center;
+            }
+            .actions {
+                display: flex;
+                justify-content: center;
+                margin-top: 30px;
+            }
+            .actions .file_submit {
+                background-color: #40C057;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                font-size: 1.1em;
+                cursor: pointer;
+                border-radius: 5px;
+                text-align: center;
+            }
+            .actions .file_submit:hover {
+                background-color: #35a02c;
+            }
+            footer {
+                text-align: center;
+                padding: 20px;
+                background-color: #333;
+                color: white;
+                clear: both;
+                position: relative;
+                height: 200px;
+                margin-top: 350px;
+            }
+            footer a {
+                color: #fff;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Header -->
+        <div id="header">
+            <img src="https://img.icons8.com/?size=100&id=19189&format=png&color=40C057" alt="Logo">
+            <h1></h1>
+            <p></p>
+            
+        </div>
+
+        <!-- Main Content -->
+        <div id="main">
+         
+
+            <div id="videoContainer">
+                <h3>Click the button below to open your camera and scan a barcode.</h3>
+
+                <form action="/open_cam" method="POST">
+                    <input type="submit" class="file_submit" value="Open Camera">
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 EFS. All rights reserved.</p>
+            <p>GitHub: <a href="https://github.com/0x844/barcodeScanner" target="_blank">Click Here</a></p>
+        </footer>
+
+    </body>
+</html>
