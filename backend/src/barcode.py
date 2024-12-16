@@ -62,11 +62,12 @@ def getData():
     global productNameAndDesc
     global productImageLink
 
+    # Clear previous entries
     productNameAndDesc = []
-    
+    productImageLink = ''
+
     response = subprocess.check_output(['curl', '-s', f"https://go-upc.com/api/v1/code/{storedBarcodes[0][0]}?key={GOUPC_API_KEY}&format=true"])
     jsonResponse = json.loads(response.decode('utf-8'))
-    print(jsonResponse)
 
     cleaned = []
     
@@ -107,8 +108,6 @@ def getData():
 
         return scores
 
-    
-
     if len(productIngredients) >= 1:    
         for num in getScore(productIngredients):
             scores.append(int(num))
@@ -118,7 +117,6 @@ def getData():
     else:
         average = round(sum(scores) / len(scores), 1)
 
-    print(average)
     return average
 
 if __name__ == "__main__":
