@@ -38,6 +38,22 @@
                 z-index: 2;
                 position: absolute;
             }
+            .bottom-image {
+                position: absolute;
+                bottom: -200px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 175px;
+                height: auto;
+            }
+            .file-submit {
+                position: absolute;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 175px;
+                height: auto;
+            }
         </style>
     </head>
     <body>
@@ -48,11 +64,11 @@
             <div class="circle-background"></div>
             <div class="circle-foreground" style="background: conic-gradient(#85b986 {{score}}%, #e0e0e0 {{score}}%);"></div>
             <div class="circle-text">{{score}}%</div>
-            <center><img src={{imageLink}}></center>
+            <center><img src={{imageLink}} class="bottom-image"></center>
         </div>
 
         <form action="/camera" method="POST">
-            <center><input type="submit" class="file_submit" value="Scan Again"></center>
+            <center><input type="submit" class="file-submit" value="Scan Again"></center>
         </form>
     </body>
 </html>
