@@ -17,15 +17,11 @@ def camera():
 def showScore():
     
     average = barcode.getData()
-    return render_template("score.html", score = average, productName = barcode.productNameAndDesc[0],\
-                           imageLink = barcode.productImageLink)#barcode.productNameAndDesc[0])
-
-@app.route("/itemInfo", methods = ["GET"])
-def getItemInfo():
-    items = itemInfo.query.all()
-    json_itemInfo = list(map(lambda x: x.to_json(), items))
+    productName = barcode.productNameAndDesc[0]
+    imageLink = barcode.productImageLink
     
-    return jsonify({"itemInfo": json_itemInfo})
+    return render_template("score.html", score = average, productName = productName,\
+                           imageLink = imageLink)
 
 @app.route("/open_cam", methods = ["POST","GET"])
 def open_cam():

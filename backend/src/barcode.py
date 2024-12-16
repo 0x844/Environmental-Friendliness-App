@@ -11,7 +11,7 @@ import google.generativeai as genai
 
 # Load API keys
 load_dotenv(find_dotenv())
-AIMLAPI_API_KEY = os.environ['API_KEY']
+GOOGLE_API_KEY = os.environ['API_KEY']
 GOUPC_API_KEY = os.environ['GOUPC_API_KEY']
 
 storedBarcodes = []
@@ -87,7 +87,7 @@ def getData():
     else:
         print("PRODUCT INGREDIENTS CANNOT BE ACCESSED")
 
-    genai.configure(api_key=f"{AIMLAPI_API_KEY}")
+    genai.configure(api_key=f"{GOOGLE_API_KEY}")
     model = genai.GenerativeModel("gemini-1.5-flash")
     
     scores = []
