@@ -19,7 +19,10 @@ average = 0
 
 def startCam():
     global storedBarcodes
+
+    # Clear stored barcodes array
     storedBarcodes = []
+
     # use cam on phone
     cap = cv2.VideoCapture("http://192.168.1.151:4747/video")
 
@@ -34,15 +37,14 @@ def startCam():
         
         # Codes in barcode 
         for barcode in detectedBarcode:
-            # if barcode is not blank 
+            # If barcode is not blank 
             if barcode.data != "" and barcode.data not in storedBarcodes:
                 storedBarcodes.append(re.findall(r'\d+', str(barcode.data)))
                 print(storedBarcodes)
         cv2.imshow('Scan Barcode' , frame)
         
-        # close webcam once barcode scanned
+        # Close webcam once barcode scanned
         if len(storedBarcodes) == 1:
-                
             cap.release()
             cv2.destroyAllWindows()
             break
