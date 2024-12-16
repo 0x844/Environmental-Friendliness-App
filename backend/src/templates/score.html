@@ -4,16 +4,54 @@
         <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
         <meta charset="UTF-8">
         <title>Environmental Impact Score</title>
+        <style>            
+            .circle-container {
+                position: relative;
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                background-color: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 20px auto;
+            }            
+            .circle-background {
+                position: absolute;
+                width: 180px;
+                height: 180px;
+                border-radius: 50%;
+                background-color: #e0e0e0;
+            }            
+            .circle-foreground {
+                position: absolute;
+                width: 180px;
+                height: 180px;
+                border-radius: 50%;
+                background: conic-gradient(#4caf50);
+                clip-path: inset(0 0 0 0);
+                transform: rotate(-90deg);
+            }
+            .circle-text {
+                font-size: 2em;
+                color: #333;
+                z-index: 2;
+                position: absolute;
+            }
+        </style>
     </head>
     <body>
         <center><img src="https://img.icons8.com/?size=100&id=XRCTHr90bal5&format=png&color=000000"></center>
-        <h3>Item: {{productName}}</h2>
-        <h2>Environmentally Friendly Score:</h1>
-        
-        <h2>{{score}}</h2>
+        <h3>Item: {{productName}}</h3>
+        <h2>Environmentally Friendly Score:</h2>
+        <div class="circle-container">
+            <div class="circle-background"></div>
+            <div class="circle-foreground" style="background: conic-gradient(#85b986 {{score}}%, #e0e0e0 {{score}}%);"></div>
+            <div class="circle-text">{{score}}%</div>
+        </div>
+
         <form action="/camera" method="POST">
             <center><input type="submit" class="file_submit" value="Scan Again"></center>
         </form>
     </body>
-    
 </html>
