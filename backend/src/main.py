@@ -5,7 +5,7 @@ import barcode
 
 app.secret_key = "00000000000000"
 
-@app.route("/main")
+@app.route("/main", methods = ["POST", "GET"])
 def index():
     return render_template("index.html")
 

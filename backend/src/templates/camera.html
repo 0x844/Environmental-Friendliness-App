@@ -56,15 +56,16 @@
             .actions .file_submit:hover {
                 background-color: #35a02c;
             }
+            
             footer {
                 text-align: center;
-                padding: 20px;
+                padding: 50px;
                 background-color: #333;
                 color: white;
                 clear: both;
                 position: relative;
                 height: 200px;
-                margin-top: 350px;
+                margin-top: 300px;
             }
             footer a {
                 color: #fff;
@@ -92,12 +93,17 @@
                 <form action="/open_cam" method="POST">
                     <input type="submit" class="file_submit" value="Open Camera">
                 </form>
+                
             </div>
-
+            
+            
         </div>
 
         <!-- Footer -->
         <footer>
+            <form action="/main" method="POST">
+                <input type="submit" class="back_submit" value="Back">
+            </form>
             <p>&copy; 2024 EFS. All rights reserved.</p>
             <p>GitHub: <a href="https://github.com/0x844/barcodeScanner" target="_blank">Click Here</a></p>
         </footer>
