@@ -18,7 +18,7 @@ def showScore():
     
     average = barcode.getData()
     return render_template("score.html", score = average, productName = barcode.productNameAndDesc[0],\
-                           )#barcode.productNameAndDesc[0])
+                           imageLink = barcode.productImageLink)#barcode.productNameAndDesc[0])
 
 @app.route("/itemInfo", methods = ["GET"])
 def getItemInfo():

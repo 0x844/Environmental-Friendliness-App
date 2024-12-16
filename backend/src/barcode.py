@@ -7,10 +7,11 @@ from openai import OpenAI
 import os
 import subprocess
 import json
+import google.generativeai as genai
 
 # Load API keys
 load_dotenv(find_dotenv())
-OPENROUTER_API_KEY = os.environ['API_KEY']
+AIMLAPI_API_KEY = os.environ['API_KEY']
 GOUPC_API_KEY = os.environ['GOUPC_API_KEY']
 
 storedBarcodes = []
@@ -23,7 +24,7 @@ def startCam():
     # Clear stored barcodes array
     storedBarcodes = []
 
-    # use cam on phone
+    # use cam on phone; alternatively, you can replace with '0' to use native webcam
     cap = cv2.VideoCapture("http://192.168.1.151:4747/video")
 
     while cap.isOpened():
@@ -55,22 +56,28 @@ def startCam():
 # -------------------------------------------------------------
 
 productNameAndDesc = []
+productImageLink = ''
 
 def getData():
     global productNameAndDesc
+    global productImageLink
+
     productNameAndDesc = []
     
     response = subprocess.check_output(['curl', '-s', f"https://go-upc.com/api/v1/code/{storedBarcodes[0][0]}?key={GOUPC_API_KEY}&format=true"])
     jsonResponse = json.loads(response.decode('utf-8'))
+    print(jsonResponse)
 
     cleaned = []
-
+    
     for key in jsonResponse['product']:
         cleaned.append(jsonResponse['product'][key])
-    
+        if 'imageUrl' in jsonResponse['product'].keys() and len(productImageLink) < 1:
+            productImageLink += jsonResponse['product']['imageUrl']
+
     productNameAndDesc.append(cleaned[0])
     productNameAndDesc.append(cleaned[1])
-    
+
     productIngredients = [] 
 
     if isinstance(cleaned[8], dict):
@@ -79,53 +86,42 @@ def getData():
     else:
         print("PRODUCT INGREDIENTS CANNOT BE ACCESSED")
 
-    client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=f"{OPENROUTER_API_KEY}"
-    )
-
+    genai.configure(api_key=f"{AIMLAPI_API_KEY}")
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    
     scores = []
 
-    def getScore(ingredient):
-        completion = client.chat.completions.create(
-        model="meta-llama/llama-3.2-11b-vision-instruct:free",
-        messages=[
-            {
-            "role": "user",
-            "content": [
-                {
-                "type": "text",
-                "text": "You are a environmental assisant that deems ingredients of a given item environmentally friendly or not. You will not be coding.\
-                    Given an ingredient, look into its background and see if its environmentally safe or not. Give this ingredient a score from 0-100, with 0\
-                        being not environmentally friendly, and 100 being environmentally friendly. Keep in mind that Water scores 100.\
-                            Just output the numerical 0-100 score ONCE please (without explanation)."
-                },
-                {
-                "type": "text",
-                "text": f"{ingredient}r"
-                },  
-            ]
-            }
-        ]
-        )
+    def getScore(ingredientList):
+        response = model.generate_content(f"Give a 0-100 rating for each of these ingredients based on its environmental friendliness: {ingredientList}. Do not include reasoning, just output the numbers in a comma seperated list in [] format")
 
-        numbers = ""
+        # Clean response
+        response_text = response.text.strip("[]")  
+        numbers = response_text.split(",")  
 
-        for char in completion.choices[0].message.content:
-            if char.isdigit():
-                numbers += char
+        scores = []
 
-        scores.append(int(numbers))
+        for number in numbers:
+            cleaned_number = ''.join(number.split()) 
+            if cleaned_number.isdigit():
+                scores.append(int(cleaned_number))
 
-    if len(productIngredients) >= 1:
-        for ingredient in productIngredients[0]:
-            getScore(ingredient)
+        return scores
+
+    
+
+    if len(productIngredients) >= 1:    
+        for num in getScore(productIngredients):
+            scores.append(int(num))
+    
     if len(scores) < 1:
         average = "ERROR: PRODUCT INGREDIENTS NOT FOUND"
     else:
         average = round(sum(scores) / len(scores), 1)
+
+    print(average)
     return average
 
 if __name__ == "__main__":
     startCam()
+    getData()
     
